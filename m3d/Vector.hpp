@@ -244,4 +244,11 @@ namespace m3d {
         stream << std::string("]");
         return stream;
     }
+
+    extern template class NVec<double>;
+    extern template class NVec<float>;
+
+    typedef NVec<double> NVeclf;
+    typedef NVec<float> NVecf;
+
 }
