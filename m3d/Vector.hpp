@@ -1,4 +1,5 @@
 
+#include <stdexcept>
 #include <vector>
 #include <cmath>
 #include <string>
@@ -8,41 +9,40 @@
 #include <iterator>
 #include <functional>
 #include <numeric>
+#include <exception>
 
 namespace m3d {
 
-/**
- * Commented away as C++ (11) doesn't allow for abstract return types
- */
-//    template <typename numtype>
-//    class VectorLike {
-//        public:
-//            typedef       numtype  value_type;
-//            typedef       numtype* pointer;
-//            typedef const numtype* const_pointer;
-//            typedef       numtype& reference;
-//            typedef const numtype& const_reference;
-//
-//            typedef size_t size_type;
-//
-//            virtual VectorLike<numtype>     operator+  (const VectorLike& rhs) const = 0;
-//            virtual VectorLike<numtype>     operator-  (const VectorLike& rhs) const = 0;
-//            virtual VectorLike<numtype>&    operator+= (const VectorLike& rhs) const = 0;
-//            virtual VectorLike<numtype>&    operator-= (const VectorLike& rhs) const = 0;
-//
-//            virtual VectorLike<numtype>     operator*  (numtype) const = 0;
-//            virtual VectorLike<numtype>     operator*  (const VectorLike<numtype>& rhs) const = 0;
-//            virtual VectorLike<numtype>     operator/  (numtype) const = 0;
-//
-//            virtual reference               operator[] (size_type i) = 0;
-//            virtual const_reference         operator[] (size_type i) const = 0;
-//            
-//            virtual pointer data() noexcept = 0;
-//            virtual const_pointer data() const noexcept = 0;
-//
-//            virtual numtype magnitude() const noexcept = 0;
-//            virtual VectorLike<numtype> normalize() const = 0;
-//    };
+
+    class VectorSizeMismatch : public std::exception {
+        public:
+
+            VectorSizeMismatch(size_t size1, size_t size2)
+            {
+                msg = "NVec size mismatch:";
+                msg += "lhs.size() = " + std::to_string(size1) + " and ";
+                msg += "rhs.size() = " + std::to_string(size2);
+            }
+
+            const char* what() const noexcept
+            {
+                return msg.c_str();
+            }
+
+        private:
+            std::string msg;
+
+    };
+
+    template<typename T>
+    class NVec;
+
+    template <typename T>
+    NVec<T> operator+(T lhs, const NVec<T>& rhs) noexcept;
+    
+    template <typename T>
+    NVec<T> operator-(T lhs, const NVec<T>& rhs) noexcept;
+
 
     /**
      * VectorLike class with an arbitrary number of dimensions which
@@ -106,6 +106,7 @@ namespace m3d {
 
             NVec<value_type> operator+(const NVec<value_type>& rhs) const
             {
+                check_size(rhs);
                 NVec<value_type> retval;
                 retval.reserve(size());
                 std::transform(cbegin(), cend(),
@@ -115,8 +116,13 @@ namespace m3d {
                     );
                 return retval;
             }
+
+            template<class T>
+            friend NVec<value_type> operator+(value_type, const NVec<value_type>) noexcept;
+            template<class T>
+            friend NVec<value_type> operator*(value_type, const NVec<value_type>) noexcept;
             
-            NVec<value_type> operator+(value_type rhs) const
+            NVec<value_type> operator+(value_type rhs) const noexcept
             {
                 NVec<value_type> retval;
                 retval.reserve(size());
@@ -127,9 +133,29 @@ namespace m3d {
                     );
                 return retval;
             }
+
+            NVec<value_type>& operator += (const NVec<value_type>& rhs) 
+            {
+                check_size(rhs);
+                std::transform(
+                        cbegin(), cend(),
+                        rhs.cbegin(),
+                        begin(),
+                        std::plus<value_type>()
+                        );
+                return *this;
+            }
+
+            NVec<value_type>& operator += (value_type& rhs) noexcept
+            {
+                for (auto& value : *this)
+                    value += rhs;
+                return *this;
+            }
             
             NVec<value_type> operator-(const NVec<value_type>& rhs) const
             {
+                check_size(rhs);
                 NVec<value_type> retval;
                 retval.reserve(size());
                 std::transform(cbegin(), cend(),
@@ -140,7 +166,7 @@ namespace m3d {
                 return retval;
             }
             
-            NVec<value_type> operator-(value_type rhs) const
+            NVec<value_type> operator-(value_type rhs) const noexcept
             {
                 NVec<value_type> retval;
                 retval.reserve(size());
@@ -150,6 +176,54 @@ namespace m3d {
                         [rhs](value_type val){return val - rhs;}
                     );
                 return retval;
+            }
+
+            NVec<value_type>& operator-= (const NVec<value_type>& rhs)
+            {
+                check_size(rhs);
+                std::transform(
+                        cbegin(), cend(),
+                        rhs.cbegin(),
+                        begin(),
+                        std::minus<value_type>()
+                        );
+                return *this;
+            }
+            
+            NVec<value_type>& operator-= (value_type rhs) noexcept
+            {
+                for (auto& value : *this)
+                    value -= rhs;
+                return *this;
+            }
+            
+            NVec<value_type> operator* (value_type rhs) const noexcept
+            {
+                NVec ret;
+                ret.reserve(size());
+                std::transform(
+                        cbegin(), cend(),
+                        std::back_inserter(ret),
+                        [rhs] (value_type val) { return val * rhs;}
+                        );
+
+                return ret;
+            }
+
+            value_type operator* (const NVec<value_type>& rhs) const
+            {
+                check_size(rhs);
+                NVec temp;
+                value_type sum(0);
+                temp.reserve(size());
+                std::transform (
+                        cbegin(), cend(),
+                        rhs.cbegin(),
+                        std::back_inserter(temp),
+                        std::multiplies<value_type>()
+                        );
+                sum = std::accumulate(temp.begin(), temp.end(), sum);
+                return sum;
             }
 
             reference operator[](size_type i) noexcept {
@@ -194,7 +268,7 @@ namespace m3d {
                 m_data.push_back(value);
             }
             
-            void push_back(const value_type&& value) {
+            void push_back(value_type&& value) {
                 m_data.emplace_back(value);
             }
 
@@ -215,7 +289,7 @@ namespace m3d {
                 );
             }
 
-            NVec<value_type> normalized() const
+            NVec<value_type> unit() const
             {
                 NVec<value_type> ret;
                 ret.reserve(size());
@@ -227,6 +301,13 @@ namespace m3d {
                 );
                 return ret;
             }
+
+        protected:
+
+            void check_size (const NVec<value_type>& rhs) const {
+                if (size() != rhs.size())
+                    throw VectorSizeMismatch(size(), rhs.size());
+            }
     };
 
     template<class numtype>
@@ -234,16 +315,29 @@ namespace m3d {
                               const NVec<numtype>& vec)
     {
         stream << std::string("[");
-        auto it = vec.cbegin();
-        while (it < vec.cend() -1) {
-            stream << *it++ << std::string(", ");
+        typename NVec<numtype>::size_type i = 0;
+        if (vec.size() != 0) {
+            while (i < vec.size() -1) {
+                stream << vec[i++] << std::string(", ");
+            }
         }
-        while (it < vec.cend()) {
-            stream << *it++;
+        while (i < vec.size()) {
+            stream << vec[i++];
         }
         stream << std::string("]");
         return stream;
     }
+
+    template<class T>
+    NVec<T> operator + (T lhs, const NVec<T>& rhs) noexcept {
+        return rhs + lhs;
+    }
+    
+    template<class T>
+    NVec<T> operator * (T lhs, const NVec<T>& rhs) noexcept {
+        return rhs * lhs;
+    }
+    
 
     extern template class NVec<double>;
     extern template class NVec<float>;
