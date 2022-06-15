@@ -258,6 +258,15 @@ namespace m3d {
             const_reference operator[](size_type i) const noexcept {
                 return m_data[i];
             }
+            
+            reference at(size_type i) {
+                return m_data[i];
+            }
+            
+            const_reference at(size_type i) const {
+                return m_data[i];
+            }
+
 
             bool operator==(const NVec<value_type>& rhs) const noexcept
             {

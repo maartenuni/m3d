@@ -53,6 +53,7 @@ void init_py_nvec(py::module_& m) {
         )
         .def("magnitude", &NVec::magnitude)
         .def("unit", &NVec::unit)
+        // artimetic operators
         .def(py::self + py::self)
         .def(py::self + NVec::value_type())
         .def(NVec::value_type() + py::self)
@@ -67,5 +68,23 @@ void init_py_nvec(py::module_& m) {
         .def(py::self / NVec::value_type())
         .def(NVec::value_type() * py::self)
         .def(-py::self)
+        // equality operators
+        .def(py::self == py::self)
+        .def(py::self != py::self)
+        // element access operators
+        .def("__getitem__",
+             [](NVec& vec, NVec::size_type i){return vec.at(i);},
+             py::arg("i"),
+             py::is_operator()
+        )
+        .def("__setitem__",
+             [](NVec& vec, NVec::size_type i, NVec::value_type val){
+                 return vec.at(i) = val;
+             },
+             py::arg("i"),
+             py::arg("value"),
+             py::is_operator()
+        )
+
         ;
 }

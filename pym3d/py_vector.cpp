@@ -110,6 +110,9 @@ void init_py_vector(py::module_& m) {
         .def(py::self / Vector4lf::value_type())
         .def(Vector4lf::value_type() * py::self)
         .def(-py::self)
+        // equality operators
+        .def(py::self == py::self)
+        .def(py::self != py::self)
         // element access operators
         .def("__getitem__",
              [](Vector4lf& vec, Vector4lf::size_type i){return vec.at(i);},
@@ -205,6 +208,9 @@ void init_py_vector(py::module_& m) {
         .def(py::self / Vector3lf::value_type())
         .def(Vector3lf::value_type() * py::self)
         .def(-py::self)
+        // equality operators
+        .def(py::self == py::self)
+        .def(py::self != py::self)
         // element access operators
         .def("__getitem__",
              [](Vector3lf& vec, Vector3lf::size_type i){return vec.at(i);},
@@ -278,6 +284,9 @@ void init_py_vector(py::module_& m) {
         .def(py::self / Vector2lf::value_type())
         .def(Vector2lf::value_type() * py::self)
         .def(-py::self)
+        // equality operators
+        .def(py::self == py::self)
+        .def(py::self != py::self)
         // element access operators
         .def("__getitem__",
              [](Vector2lf& vec, Vector2lf::size_type i){return vec.at(i);},
