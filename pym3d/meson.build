@@ -19,7 +19,9 @@ pybind11_dep = declare_dependency(
 )
 
 pyvec_sources = files(
-    'pyvec.cpp'
+    'pyvec.cpp',
+    'py_nvec.cpp',
+    'py_vector.cpp'
 )
 
 configure_file(

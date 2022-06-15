@@ -1,5 +1,5 @@
 
-#include <m3d/Vector.hpp>
+#include <m3d/NVec.hpp>
 #include <iostream>
 #include <iomanip>
 

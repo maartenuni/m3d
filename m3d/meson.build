@@ -1,12 +1,13 @@
 
 m3d_sources = files(
-    'Vector.cpp',
+    'NVec.cpp',
+    'Vector.cpp'
 )
 
 libm3d = library(
     'm3d',
     m3d_sources,
-    install : true
+    install : true,
 )
 
 m3d_dep = declare_dependency(
