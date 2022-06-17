@@ -1,4 +1,6 @@
 
+#pragma once
+
 #include <stdexcept>
 #include <cmath>
 #include <string>
@@ -174,7 +176,7 @@ namespace m3d {
                 std::transform(
                         cbegin(), cend(),
                         ret.begin(),
-                        [rhs] (value_type val) { return val / rhs;}
+                        [rhs] (value_type val) {return val / rhs;}
                         );
 
                 return ret;
@@ -259,14 +261,7 @@ namespace m3d {
 
             Vector<value_type, n> unit() const
             {
-                Vector<value_type, n> ret;
-                value_type mag = magnitude();
-                std::transform(
-                    cbegin(), cend(),
-                    ret.begin(),
-                    [mag](const_reference value) {return value / mag;}
-                );
-                return ret;
+                return *this/magnitude();
             }
 
     };

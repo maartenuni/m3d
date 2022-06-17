@@ -1,7 +1,8 @@
 
 m3d_sources = files(
     'NVec.cpp',
-    'Vector.cpp'
+    'Vector.cpp',
+    'vector_functions.cpp'
 )
 
 libm3d = library(

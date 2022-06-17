@@ -17,5 +17,6 @@ PYBIND11_MODULE(vector, m) {
 
     init_py_nvec(m);
     init_py_vector(m);
+    init_py_vector_functions(m);
 
 }

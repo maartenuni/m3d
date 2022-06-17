@@ -1,4 +1,6 @@
 
+#pragma once
+
 #include <stdexcept>
 #include <vector>
 #include <cmath>
@@ -325,15 +327,7 @@ namespace m3d {
 
             NVec<value_type> unit() const
             {
-                NVec<value_type> ret;
-                ret.reserve(size());
-                value_type mag = magnitude();
-                std::transform(
-                    cbegin(), cend(),
-                    std::back_inserter(ret),
-                    [mag](const_reference value) {return value / mag;}
-                );
-                return ret;
+                return *this/magnitude();
             }
 
         protected:
