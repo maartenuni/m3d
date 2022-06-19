@@ -11,9 +11,10 @@ void init_py_vector_functions(py::module_& m) {
     using m3d::Vector4lf;
     using m3d::Vector3lf;
     using m3d::Vector2lf;
+    using m3d::NVeclf;
 
     using m3d::distance;
-    using m3d::NVeclf;
+    using m3d::cross;
 
     m.def("distance",
         [] (const Vector4lf& lhs, const Vector4lf& rhs) {return distance(lhs, rhs);},
@@ -31,6 +32,11 @@ void init_py_vector_functions(py::module_& m) {
     m.def("distance",
         [] (const NVeclf& lhs, const NVeclf& rhs) {return distance(lhs, rhs);},
         "A fuction that calculates the distance between two n-dimensional points."
+    );
+
+    m.def("cross",
+        [] (const Vector3lf& lhs, const Vector3lf& rhs) {return cross(lhs, rhs);},
+        "Return the cross product of 2 three dimensional vectors"
     );
 
 }

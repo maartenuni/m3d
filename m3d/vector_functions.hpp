@@ -53,4 +53,35 @@ namespace m3d {
         return (rhs - lhs).magnitude();
     }
 
+    extern template
+        NVec<double>::value_type distance(
+            const NVec<double>&,
+            const NVec<double>&
+            );
+    extern template
+        NVec<float>::value_type distance(
+            const NVec<float>&,
+            const NVec<float>&
+            );
+
+    template <typename T>
+    Vector<T, 3> cross(
+            const Vector<T, 3>& lhs,
+            const Vector<T, 3>& rhs) noexcept {
+        Vector<T, 3> ret;
+        ret[0] = lhs[1] * rhs[2] - lhs[2] * rhs[1];
+        ret[1] = lhs[2] * rhs[0] - lhs[0] * rhs[2];
+        ret[2] = lhs[0] * rhs[1] - lhs[1] * rhs[0];
+        return ret;
+    }
+    
+    extern template Vector<double, 3> cross (
+            const Vector<double, 3>& lhs,
+            const Vector<double, 3>& rhs
+            ) noexcept;
+    extern template Vector<float, 3> cross (
+            const Vector<float, 3>& lhs,
+            const Vector<float, 3>& rhs
+            ) noexcept;
+
 }

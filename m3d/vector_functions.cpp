@@ -36,4 +36,13 @@ namespace m3d {
             const NVec<double>&,
             const NVec<double>&
             );
+
+    template Vector<double, 3> cross (
+            const Vector<double, 3>& lhs,
+            const Vector<double, 3>& rhs
+            ) noexcept;
+    template Vector<float, 3> cross (
+            const Vector<float, 3>& lhs,
+            const Vector<float, 3>& rhs
+            ) noexcept;
 }
