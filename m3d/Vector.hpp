@@ -57,7 +57,7 @@ namespace m3d {
                 return n;
             }
 
-            /* support for overloading aritmetic operators */
+            /* support for overloading arithmetic operators */
 
             template<class T>
             friend Vector<value_type, n> operator+(value_type, const Vector<value_type, n>&) noexcept;
@@ -183,13 +183,7 @@ namespace m3d {
             }
 
             Vector<value_type, n> operator-() const noexcept {
-                Vector<value_type, n> ret;
-                std::transform(
-                        cbegin(), cend(),
-                        ret.begin(),
-                        [](const_reference value) {return -value;}
-                        );
-                return ret;
+                return (*this) * value_type(-1);
             }
 
             /* element access */
@@ -244,7 +238,7 @@ namespace m3d {
                 return !(*this < rhs);
             }
 
-            /* Some simple aritmetics on the vector */
+            /* Some simple arithmetics on the vector */
 
             value_type magnitude() const noexcept
             {
