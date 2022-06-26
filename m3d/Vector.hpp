@@ -11,6 +11,7 @@
 #include <functional>
 #include <numeric>
 #include <exception>
+#include <iostream>
 
 namespace m3d {
 
@@ -158,16 +159,13 @@ namespace m3d {
 
             value_type operator* (const Vector<value_type, n>& rhs) const
             {
-                Vector temp;
-                value_type sum(0);
-                std::transform (
-                        cbegin(), cend(),
-                        rhs.cbegin(),
-                        temp.begin(),
-                        std::multiplies<value_type>()
-                        );
-                sum = std::accumulate(temp.cbegin(), temp.cend(), sum);
-                return sum;
+                return std::inner_product(
+                    cbegin(), cend(),
+                    rhs.cbegin(),
+                    value_type(0),
+                    std::plus<value_type>(),
+                    std::multiplies<value_type>()
+                );
             }
 
             Vector<value_type, n> operator/ (value_type rhs) const noexcept

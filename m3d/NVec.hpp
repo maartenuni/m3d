@@ -215,17 +215,13 @@ namespace m3d {
             value_type operator* (const NVec<value_type>& rhs) const
             {
                 check_size(rhs);
-                NVec temp;
-                value_type sum(0);
-                temp.reserve(size());
-                std::transform (
+                return std::inner_product(
                         cbegin(), cend(),
-                        rhs.cbegin(),
-                        std::back_inserter(temp),
-                        std::multiplies<value_type>()
+                        cbegin(),
+                        value_type(0),
+                        std::plus(),
+                        std::multiplies()
                         );
-                sum = std::accumulate(temp.begin(), temp.end(), sum);
-                return sum;
             }
             
             NVec<value_type> operator/ (value_type rhs) const noexcept
