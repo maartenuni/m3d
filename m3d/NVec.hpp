@@ -239,7 +239,10 @@ namespace m3d {
 
             NVec<value_type> operator-()const noexcept
             {
-                return (*this) * value_type(-1);
+                NVec ret;
+                ret.reserve(size());
+                std::transform(cbegin(), cend(), std::back_inserter(ret), std::negate());
+                return ret;
             }
 
             reference operator[](size_type i) noexcept {

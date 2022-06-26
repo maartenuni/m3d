@@ -181,7 +181,9 @@ namespace m3d {
             }
 
             Vector<value_type, n> operator-() const noexcept {
-                return (*this) * value_type(-1);
+                Vector ret;
+                std::transform(cbegin(), cend(), ret.begin(), std::negate());
+                return ret;
             }
 
             /* element access */
