@@ -254,11 +254,11 @@ namespace m3d {
             }
             
             reference at(size_type i) {
-                return m_data[i];
+                return m_data.at(i);
             }
             
             const_reference at(size_type i) const {
-                return m_data[i];
+                return m_data.at(i);
             }
 
 
