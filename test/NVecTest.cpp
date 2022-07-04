@@ -1,19 +1,19 @@
 
-#include "m3d/Vector.hpp"
+#include "m3d/NVec.hpp"
 #include "doctest.h"
 #include <stdexcept>
 
-using m3d::Vector4lf;
+using m3d::NVeclf;
 
 TEST_CASE("Vector construction") {
-    const Vector4lf vec = {1,2,3,4};
-    REQUIRE(vec == Vector4lf{1,2,3,4});
+    const NVeclf vec = {1,2,3,4};
+    REQUIRE(vec == NVeclf{1,2,3,4});
 
     SUBCASE ("Check vector elements after construction") {
-        CHECK(vec[0] == Vector4lf::value_type(1));
-        CHECK(vec[1] == Vector4lf::value_type(2));
-        CHECK(vec[2] == Vector4lf::value_type(3));
-        CHECK(vec[3] == Vector4lf::value_type(4));
+        CHECK(vec[0] == NVeclf::value_type(1));
+        CHECK(vec[1] == NVeclf::value_type(2));
+        CHECK(vec[2] == NVeclf::value_type(3));
+        CHECK(vec[3] == NVeclf::value_type(4));
     }
 
     SUBCASE ("Check size after construction") {
@@ -22,12 +22,12 @@ TEST_CASE("Vector construction") {
 }
 
 TEST_CASE("Test vector addition") {
-    const Vector4lf v1234  = {1,2,3,4};
-    const Vector4lf result = v1234 * 2.0;
-    const Vector4lf null{};
+    const NVeclf v1234  = {1,2,3,4};
+    const NVeclf result = v1234 * 2.0;
+    const NVeclf null{0,0,0,0};
 
     SUBCASE("Test scalar addition") {
-        CHECK(Vector4lf{2,3,4,5} == v1234 + 1);
+        CHECK(NVeclf{2,3,4,5} == v1234 + 1);
     }
     
     SUBCASE("Test vector addition") {
@@ -40,7 +40,7 @@ TEST_CASE("Test vector addition") {
     }
 
     SUBCASE("test operator +=") {
-        Vector4lf null{};
+        NVeclf null{0,0,0,0};
         null += v1234;
         CHECK(null == v1234);
     }
@@ -48,8 +48,8 @@ TEST_CASE("Test vector addition") {
 
 TEST_CASE ("test vector subtraction")
 {
-    const Vector4lf v1234 = {1,2,3,4};
-    const Vector4lf null{};
+    const NVeclf v1234 = {1,2,3,4};
+    const NVeclf null{0, 0, 0, 0};
 
     SUBCASE("test inverse additive Identity") {
         CHECK( null ==  v1234 + -v1234);
@@ -58,13 +58,13 @@ TEST_CASE ("test vector subtraction")
 }
 
 TEST_CASE ("Test vector scaling") {
-    const Vector4lf v1234  = {1,2,3,4};
-    const Vector4lf::value_type scalar = 2.0;
-    const Vector4lf::value_type minus_one= -1.0;
-    const Vector4lf result = {
+    const NVeclf v1234  = {1,2,3,4};
+    const NVeclf::value_type scalar = 2.0;
+    const NVeclf::value_type minus_one= -1.0;
+    const NVeclf result = {
         v1234[0] * scalar, v1234[1] * scalar, scalar * v1234[2], scalar * v1234[3]
     };
-    const Vector4lf negative1234 = -v1234; 
+    const NVeclf negative1234 = -v1234; 
 
     SUBCASE("Test scaling by 2") {
         CHECK(result == v1234 * scalar);
@@ -77,9 +77,9 @@ TEST_CASE ("Test vector scaling") {
     }
 }
 TEST_CASE ("Test vector scalar division") {
-    const Vector4lf v1234  = {1,2,3,4};
-    const Vector4lf::value_type scalar = 2.0;
-    const Vector4lf result = {
+    const NVeclf v1234  = {1,2,3,4};
+    const NVeclf::value_type scalar = 2.0;
+    const NVeclf result = {
         v1234[0] / scalar, v1234[1] / scalar, v1234[2] / scalar, v1234[3] / scalar
     };
 
@@ -93,10 +93,10 @@ TEST_CASE ("Test vector scalar division") {
 }
 
 TEST_CASE("Test vector logical operators") {
-    const Vector4lf v1234{1,2,3,4};
-    const Vector4lf v5432{5,4,3,2};
-    const Vector4lf v1copy = v1234;
-    const Vector4lf v2copy{5,4,3,2};
+    const NVeclf v1234{1,2,3,4};
+    const NVeclf v5432{5,4,3,2};
+    const NVeclf v1copy = v1234;
+    const NVeclf v2copy{5,4,3,2};
 
     SUBCASE("Check equality operators") {
         CHECK(v1234 == v1234);
@@ -112,7 +112,7 @@ TEST_CASE("Test vector logical operators") {
 
 TEST_CASE("Test vector element access") {
 
-    Vector4lf v1{1,2,3,4};
+    NVeclf v1{1,2,3,4};
     CHECK(v1[0] == 1);
     CHECK(v1[1] == 2);
     CHECK(v1[2] == 3);
@@ -127,15 +127,15 @@ TEST_CASE("Test vector element access") {
     v1.at(2) = 0;
     v1.at(3) = 0;
 
-    CHECK (v1 == Vector4lf{});
+    CHECK (v1 == NVeclf{0, 0, 0, 0});
     CHECK_THROWS_AS(v1.at(4), std::out_of_range);
     CHECK_THROWS_AS(v1.at(-1), std::out_of_range);
 }
 
 TEST_CASE("Test vector element access") {
-    Vector4lf v1{1,2,3,4};
-    Vector4lf v2 = v1 * 2.0;
-    Vector4lf unit = v1.unit();
+    NVeclf v1{1,2,3,4};
+    NVeclf v2 = v1 * 2.0;
+    NVeclf unit = v1.unit();
 
     SUBCASE("unitvector is of unit length") {
         CHECK(unit.magnitude() == doctest::Approx(1.0));
