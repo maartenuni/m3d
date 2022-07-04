@@ -182,7 +182,11 @@ namespace m3d {
 
             Vector<value_type, n> operator-() const noexcept {
                 Vector ret;
-                std::transform(cbegin(), cend(), ret.begin(), std::negate());
+                std::transform(
+                        cbegin(), cend(),
+                        ret.begin(),
+                        std::negate<value_type>()
+                        );
                 return ret;
             }
 

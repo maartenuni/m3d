@@ -219,8 +219,8 @@ namespace m3d {
                         cbegin(), cend(),
                         cbegin(),
                         value_type(0),
-                        std::plus(),
-                        std::multiplies()
+                        std::plus<value_type>(),
+                        std::multiplies<value_type>()
                         );
             }
             
@@ -241,7 +241,11 @@ namespace m3d {
             {
                 NVec ret;
                 ret.reserve(size());
-                std::transform(cbegin(), cend(), std::back_inserter(ret), std::negate());
+                std::transform(
+                        cbegin(), cend(),
+                        std::back_inserter(ret),
+                        std::negate<value_type>()
+                        );
                 return ret;
             }
 
