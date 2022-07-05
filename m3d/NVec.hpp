@@ -217,7 +217,7 @@ namespace m3d {
                 check_size(rhs);
                 return std::inner_product(
                         cbegin(), cend(),
-                        cbegin(),
+                        rhs.cbegin(),
                         value_type(0),
                         std::plus<value_type>(),
                         std::multiplies<value_type>()

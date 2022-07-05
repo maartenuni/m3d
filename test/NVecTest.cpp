@@ -92,6 +92,40 @@ TEST_CASE ("Test vector scalar division") {
     }
 }
 
+TEST_CASE("Test NVec dot product") {
+    const NVeclf v10  {1, 0};
+    const NVeclf v01  {0, 1};
+    const NVeclf v11  {1, 1};
+    const NVeclf vneg {-1, -1};
+
+    const NVeclf v1234{1,2,3,4};
+    const NVeclf v1111{1,1,1,1};
+
+    SUBCASE("Test dot product on perpendicular vectors") {
+        CHECK(v10 * v01 == doctest::Approx(0.0));
+        CHECK(v01 * v10 == doctest::Approx(0.0));
+    }
+    SUBCASE("Test dot product on acute angle") {
+        CHECK(v11 * v10 > 0.0 );
+        CHECK(v01 * v11 > 0.0);
+    }
+    SUBCASE("Test dot product on obtuse angle") {
+        CHECK(vneg * v10 < 0.0);
+        CHECK(v01 * vneg < 0.0);
+    }
+    SUBCASE("Test dot product is commutative") {
+        CHECK(v10 * v01 == v01 * v10);
+        CHECK(v10 * vneg == vneg * v10);
+    }
+    SUBCASE("Test dot product is commutative") {
+        CHECK(v10 * v01 == v01 * v10);
+        CHECK(v10 * vneg == vneg * v10);
+    }
+    SUBCASE("Test dot product is acurate") {
+        CHECK(v1234 * v1111 == 10.0);
+    }
+}
+
 TEST_CASE("Test vector logical operators") {
     const NVeclf v1234{1,2,3,4};
     const NVeclf v5432{5,4,3,2};
