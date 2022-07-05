@@ -5,11 +5,11 @@
 
 using m3d::NVeclf;
 
-TEST_CASE("Vector construction") {
+TEST_CASE("NVec construction") {
     const NVeclf vec = {1,2,3,4};
     REQUIRE(vec == NVeclf{1,2,3,4});
 
-    SUBCASE ("Check vector elements after construction") {
+    SUBCASE ("Check NVec elements after construction") {
         CHECK(vec[0] == NVeclf::value_type(1));
         CHECK(vec[1] == NVeclf::value_type(2));
         CHECK(vec[2] == NVeclf::value_type(3));
@@ -21,7 +21,7 @@ TEST_CASE("Vector construction") {
     }
 }
 
-TEST_CASE("Test vector addition") {
+TEST_CASE("Test NVec addition") {
     const NVeclf v1234  = {1,2,3,4};
     const NVeclf result = v1234 * 2.0;
     const NVeclf null{0,0,0,0};
@@ -30,11 +30,11 @@ TEST_CASE("Test vector addition") {
         CHECK(NVeclf{2,3,4,5} == v1234 + 1);
     }
     
-    SUBCASE("Test vector addition") {
+    SUBCASE("Test NVec addition") {
         CHECK(result == v1234 + v1234);
     }
 
-    SUBCASE ("test vector AdditiveIdentity") {
+    SUBCASE ("test NVec AdditiveIdentity") {
         CHECK(v1234 == (null + v1234));
         CHECK(v1234 == (v1234 + null));
     }
@@ -46,7 +46,7 @@ TEST_CASE("Test vector addition") {
     }
 }
 
-TEST_CASE ("test vector subtraction")
+TEST_CASE ("test NVec subtraction")
 {
     const NVeclf v1234 = {1,2,3,4};
     const NVeclf null{0, 0, 0, 0};
@@ -57,7 +57,7 @@ TEST_CASE ("test vector subtraction")
     }
 }
 
-TEST_CASE ("Test vector scaling") {
+TEST_CASE ("Test NVec scaling") {
     const NVeclf v1234  = {1,2,3,4};
     const NVeclf::value_type scalar = 2.0;
     const NVeclf::value_type minus_one= -1.0;
@@ -71,12 +71,12 @@ TEST_CASE ("Test vector scaling") {
         CHECK(result == scalar * v1234);
         CHECK(v1234.magnitude() * scalar == (v1234 * scalar).magnitude());
     }
-    SUBCASE("Test whether scaling by -1 equals negating a Vector") {
+    SUBCASE("Test whether scaling by -1 equals negating a NVec") {
         CHECK(negative1234 == v1234 * minus_one);
         CHECK(v1234.magnitude() == (v1234 * minus_one).magnitude());
     }
 }
-TEST_CASE ("Test vector scalar division") {
+TEST_CASE ("Test NVec scalar division") {
     const NVeclf v1234  = {1,2,3,4};
     const NVeclf::value_type scalar = 2.0;
     const NVeclf result = {
@@ -101,7 +101,7 @@ TEST_CASE("Test NVec dot product") {
     const NVeclf v1234{1,2,3,4};
     const NVeclf v1111{1,1,1,1};
 
-    SUBCASE("Test dot product on perpendicular vectors") {
+    SUBCASE("Test dot product on perpendicular NVecs") {
         CHECK(v10 * v01 == doctest::Approx(0.0));
         CHECK(v01 * v10 == doctest::Approx(0.0));
     }
@@ -117,16 +117,12 @@ TEST_CASE("Test NVec dot product") {
         CHECK(v10 * v01 == v01 * v10);
         CHECK(v10 * vneg == vneg * v10);
     }
-    SUBCASE("Test dot product is commutative") {
-        CHECK(v10 * v01 == v01 * v10);
-        CHECK(v10 * vneg == vneg * v10);
-    }
     SUBCASE("Test dot product is acurate") {
         CHECK(v1234 * v1111 == 10.0);
     }
 }
 
-TEST_CASE("Test vector logical operators") {
+TEST_CASE("Test NVec logical operators") {
     const NVeclf v1234{1,2,3,4};
     const NVeclf v5432{5,4,3,2};
     const NVeclf v1copy = v1234;
@@ -144,7 +140,7 @@ TEST_CASE("Test vector logical operators") {
     }
 }
 
-TEST_CASE("Test vector element access") {
+TEST_CASE("Test NVec element access") {
 
     NVeclf v1{1,2,3,4};
     CHECK(v1[0] == 1);
@@ -166,7 +162,7 @@ TEST_CASE("Test vector element access") {
     CHECK_THROWS_AS(v1.at(-1), std::out_of_range);
 }
 
-TEST_CASE("Test vector element access") {
+TEST_CASE("Test NVec element access") {
     NVeclf v1{1,2,3,4};
     NVeclf v2 = v1 * 2.0;
     NVeclf unit = v1.unit();

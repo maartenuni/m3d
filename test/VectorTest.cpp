@@ -76,6 +76,40 @@ TEST_CASE ("Test vector scaling") {
         CHECK(v1234.magnitude() == (v1234 * minus_one).magnitude());
     }
 }
+
+TEST_CASE("Test Vector dot product") {
+    using m3d::Vector2lf;
+    const Vector2lf v10  {1, 0};
+    const Vector2lf v01  {0, 1};
+    const Vector2lf v11  {1, 1};
+    const Vector2lf vneg {-1, -1};
+
+    const Vector4lf v1234{1,2,3,4};
+    const Vector4lf v1111{1,1,1,1};
+
+    SUBCASE("Test dot product on perpendicular vectors") {
+        CHECK(v10 * v01 == doctest::Approx(0.0));
+        CHECK(v01 * v10 == doctest::Approx(0.0));
+    }
+    SUBCASE("Test dot product on acute angle") {
+        CHECK(v11 * v10 > 0.0 );
+        CHECK(v01 * v11 > 0.0);
+    }
+    SUBCASE("Test dot product on obtuse angle") {
+        CHECK(vneg * v10 < 0.0);
+        CHECK(v01 * vneg < 0.0);
+    }
+    SUBCASE("Test dot product is commutative") {
+        CHECK(v10 * v01 == v01 * v10);
+        CHECK(v10 * vneg == vneg * v10);
+    }
+    SUBCASE("Test dot product is acurate") {
+        CHECK(v1234 * v1111 == 10.0);
+    }
+}
+
+
+
 TEST_CASE ("Test vector scalar division") {
     const Vector4lf v1234  = {1,2,3,4};
     const Vector4lf::value_type scalar = 2.0;
