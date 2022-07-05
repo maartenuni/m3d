@@ -107,7 +107,6 @@ TEST_CASE("NVec angle") {
     const NVeclf xy = {1,1,0};
 
     const NVeclf::value_type half_pi = M_PI/2;
-    auto deg = angle(xc, yc);
 
     CHECK(angle(xc, yc) == doctest::Approx(half_pi));
     CHECK(angle(yc, zc) == doctest::Approx(half_pi));
@@ -130,8 +129,6 @@ TEST_CASE("NVec angle degrees") {
 
     const NVeclf::value_type ninety = 90;
     const NVeclf::value_type fortyfive = 45;
-
-    auto deg = angle_deg(xc, yc);
 
     CHECK(angle_deg(xc, yc) == doctest::Approx(ninety));
     CHECK(angle_deg(yc, zc) == doctest::Approx(ninety));
