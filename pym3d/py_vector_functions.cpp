@@ -39,4 +39,39 @@ void init_py_vector_functions(py::module_& m) {
         "Return the cross product of 2 three dimensional vectors"
     );
 
+    m.def("angle",
+        [](const Vector2lf& lhs, const Vector2lf& rhs) {return angle(lhs, rhs);},
+        "Returns the angle between 2 2D vectors"
+    );
+    m.def("angle",
+        [](const Vector3lf& lhs, const Vector3lf& rhs) {return angle(lhs, rhs);},
+        "Returns the angle between 2 3D vectors"
+    );
+    m.def("angle",
+        [](const Vector4lf& lhs, const Vector4lf& rhs) {return angle(lhs, rhs);},
+        "Returns the angle between 2 4D vectors"
+    );
+    m.def("angle",
+        [](const NVeclf& lhs, const NVeclf& rhs) {return angle(lhs, rhs);},
+        "Returns the angle between 2 NVecs with the same number of dimensions"
+    );
+    
+    m.def("angle_deg",
+        [](const Vector2lf& lhs, const Vector2lf& rhs) {return angle_deg(lhs, rhs);},
+        "Returns the angle in degrees between 2 2D vectors"
+    );
+    m.def("angle_deg",
+        [](const Vector3lf& lhs, const Vector3lf& rhs) {return angle_deg(lhs, rhs);},
+        "Returns the angle in degrees between 2 3D vectors"
+    );
+    m.def("angle_deg",
+        [](const Vector4lf& lhs, const Vector4lf& rhs) {return angle_deg(lhs, rhs);},
+        "Returns the angle in degrees between 2 4D vectors"
+    );
+    m.def("angle_deg",
+        [](const NVeclf& lhs, const NVeclf& rhs) {return angle_deg(lhs, rhs);},
+        "Returns the angle in degrees between 2 NVecs with the same number of dimensions"
+    );
+
+
 }

@@ -21,6 +21,7 @@ unittest_sources = files(
     'unittest.cpp',
     'NVecTest.cpp',
     'VectorTest.cpp',
+    'vector_operations_test.cpp',
 )
 
 unittest = executable (
